@@ -1,0 +1,10 @@
+{
+  "title": "Saute-Chad",
+  "description": "Le jeu de saut infini : rebondis de plateforme en plateforme, attrape les ressorts et grimpe plus haut que les potes.",
+  "author": "ChadGang",
+  "category": "Solo",
+  "emoji": "🦘",
+  "image": "cover.png",
+  "classement": "score",
+  "unite": "m"
+}
