@@ -80,6 +80,9 @@ canvas{display:block;touch-action:none}
 'use strict';
 /* ===== Kit commun ChadGang (menus, sons, classement du hub, records) ===== */
 const $=id=>document.getElementById(id);
+// Les gestes servent au jeu : on empêche la page (et le hub autour) de défiler ou de rebondir, sauf dans les menus
+for(const ev of ['touchmove','touchstart'])document.addEventListener(ev,e=>{if(!e.target.closest('.panel,button,#top'))e.preventDefault()},{passive:false});
+document.addEventListener('gesturestart',e=>e.preventDefault());
 const CG=(()=>{
   const cfg={key:'jeu',unit:'',medals:[[10,'🥉','Médaille de bronze'],[25,'🥈','Médaille d\'argent'],[50,'🥇','Médaille d\'or'],[100,'💎','Médaille de diamant !']],lowMsg:'Encore un effort…',onStart(){},fmt:n=>String(n)};
   const HUB=typeof ChadGang!=='undefined';
@@ -213,7 +216,7 @@ function step(){t++;
   P.vy+=GRAV;const py=P.y;P.y+=P.vy;if(P.squash>0)P.squash-=.08;
   if(P.vy>0)for(const p of plats){if(p.gone)continue;
     if(py<=p.y&&P.y>=p.y&&P.x+12>p.x&&P.x-12<p.x+p.w){
-      if(p.k==='b'){p.gone=true;p.fall=0;CG.sfx.noise(0,.15,.6,600);continue}
+      if(p.k==='b'){p.gone=true;p.fall=0;CG.sfx.noise(0,.15,.6,600);for(let i=0;i<8;i++)parts.push({x:p.x+Math.random()*p.w,y:p.y+6,vx:(Math.random()-.5)*3,vy:Math.random()*2,l:24,c:'#c9965a'})} // bois : on rebondit une fois, puis elle casse
       if(p.spring!=null&&P.x>p.x+p.spring-6&&P.x<p.x+p.spring+22){P.vy=SPRING;p.sprung=10;CG.sfx.tone(300,0,.35,{type:'square',v:.3,to:1200});CG.popup('BOING !')}
       else{P.vy=JUMP;CG.sfx.tone(380,0,.09,{type:'triangle',v:.25,to:640})}
       P.y=p.y;P.squash=1;for(let i=0;i<4;i++)parts.push({x:P.x,y:p.y,vx:(Math.random()-.5)*3,vy:-Math.random()*2,l:18,c:'#fff'});break}}
