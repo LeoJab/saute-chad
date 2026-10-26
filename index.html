@@ -182,7 +182,9 @@ var SIM=function(seed,hooks){
     if(k==='m')p.vx=(1+lvl*2.2)*(rnd()<.5?-1:1);
     if(k!=='b'&&rnd()<.08)p.spring=rnd()*(w-20)+4;
     S.plats.push(p);
-    if(k==='b'&&rnd()<.7)S.plats.push({x:rnd()*(W-w),y:y-25-rnd()*20,w:w,k:'n',vx:0});
+    // planche en bois (casse après un saut) : TOUJOURS un appui solide à côté, à peu près à la même hauteur,
+    // sinon si on la rate (ou une fois cassée) il n'y a plus de quoi monter et le joueur reste bloqué
+    if(k==='b'){var sx=(p.x+w+30+rnd()*(W-2*w-60))%(W-w);S.plats.push({x:sx,y:y-rnd()*18,w:w,k:'n',vx:0})}
   }
   S.plats.push({x:W/2-40,y:620,w:80,k:'n',vx:0});var y0=620;while(y0>-200){y0-=60+rnd()*30;addPlat(y0)}
   // 1 gauche appuyé · 2 gauche relâché · 3 droite appuyé · 4 droite relâché
